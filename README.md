@@ -1,12 +1,17 @@
-# Personal Introduction website + Blog
+# Ravi Raj — Personal Blog
 
-I liked the design and simplicity of this website: https://nithinkamath.me/.
-
-Hence, I copied the design, using vibe coding.
+Musings on technology, business, and life. Hosted on GitHub Pages at [raviraj.qd.je](https://raviraj.qd.je).
 
 ## How it works
 
-A client-side blog: posts live as Markdown files in `posts/`, the browser renders them at runtime (`app.js` + `marked.min.js`). No build step at deploy.
+Posts are written in Markdown (`posts/*.md`) and rendered into static HTML pages by `make.js` — which runs automatically on every push via the GitHub Action, so you never have to build locally.
+
+Each push generates:
+
+- `post/<slug>/index.html` — one crawlable page per post, with meta tags, canonical URL, and JSON-LD Article schema
+- `blog.html` — the musings listing
+- `sitemap.xml`, `llms.txt`, `posts.json`
+- `index.html` — homepage with JSON-LD Person schema
 
 ## Adding a post
 
@@ -17,20 +22,15 @@ A client-side blog: posts live as Markdown files in `posts/`, the browser render
 title: "My Post"
 date: "2026-09-01"
 description: "One-line excerpt"
+slug: "my-post"   # optional; defaults to a slug derived from the title
 ---
 
 Your markdown content here.
 ```
 
-2. Regenerate the index:
+2. Commit and push. Nothing else needed — the GitHub Action regenerates the static site, and GitHub Pages redeploys.
 
-```bash
-node make
-```
-
-3. Commit and push.
-
-The post appears at `blog.html#/<slug>`.
+Optionally build locally to preview: `node make` (requires the vendored `marked.min.js`, no extra packages).
 
 ## Local preview
 

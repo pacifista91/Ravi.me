@@ -1,7 +1,18 @@
 const fs = require('fs');
 const path = require('path');
+const marked = require('./marked.min.js');
 
+const CNAME = fs.existsSync('./CNAME') ? fs.readFileSync('./CNAME', 'utf-8').trim() : '';
+const SITE_URL = (
+  process.env.SITE_URL ||
+  (CNAME ? `https://${CNAME}` : 'https://pacifista91.github.io/Ravi.me')
+).replace(/\/$/, '');
+const SITE_TITLE = 'Ravi Raj';
+const SITE_TAGLINE = '"दोगलापन" bhi zaroori hai.';
+const SITE_DESCRIPTION = 'An assorted collection of thoughts on technology, business, and life.';
+const AUTHOR = 'Ravi Raj';
 const POSTS_DIR = './posts';
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
 
 const parseFrontMatter = (content) => {
   const match = content.match(/^---\r?\n([\s\S]*?)\r?\n---\r?\n?/);
@@ -19,28 +30,228 @@ const parseFrontMatter = (content) => {
   return { meta, body };
 };
 
-const details = (file) => {
-  const content = fs.readFileSync(path.join(POSTS_DIR, file), 'utf-8');
-  const { meta, body } = parseFrontMatter(content);
-  const slug = file.replace(/\.md$/, '');
+const slugify = (s) =>
+  (s || '')
+    .toLowerCase()
+    .trim()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/(^-|-$)/g, '');
 
-  return {
-    title: meta.title || slug.replace(/-/g, ' '),
-    date: meta.date || fs.statSync(path.join(POSTS_DIR, file)).mtime.toISOString().slice(0, 10),
-    description: meta.description || '',
-    size: body.length,
-    content: body,
-  };
+const escapeHtml = (s) =>
+  String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+
+const formatYear = (iso) => {
+  const d = new Date(iso);
+  return `${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
 };
 
-const posts = fs
-  .readdirSync(POSTS_DIR)
-  .filter((file) => file.endsWith('.md'))
-  .reduce((acc, file) => {
-    const slug = file.replace(/\.md$/, '');
-    acc[slug] = details(file);
+const shell = ({ cssPath, homePath, blogPath, title, description, activeNav, canonical, jsonLd }) => `
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${escapeHtml(title)}</title>
+    <meta name="description" content="${escapeHtml(description)}">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="${escapeHtml(title)}">
+    <meta property="og:description" content="${escapeHtml(description)}">
+    <meta property="og:url" content="${canonical}">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="${escapeHtml(title)}">
+    <meta name="twitter:description" content="${escapeHtml(description)}">
+    <link rel="canonical" href="${canonical}">
+    ${jsonLd ? `<script type="application/ld+json">${jsonLd}</script>` : ''}
+    <link rel="stylesheet" href="${cssPath}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <section class="container wrap">
+        <div class="header">
+            <div class="logo">
+                <h1><a href="${homePath}">${SITE_TITLE}</a></h1>
+                <p class="tagline">${SITE_TAGLINE}</p>
+            </div>
+            <nav class="nav">
+                <a href="${homePath}" ${activeNav === 'home' ? 'class="active"' : ''}>Home</a>
+                <a href="${blogPath}" ${activeNav === 'musings' ? 'class="active"' : ''}>Musings</a>
+            </nav>
+        </div>
+        <div class="content">
+            {{BODY}}
+        </div>
+    </section>
+    <footer class="footer">
+        ${SITE_TITLE} © 2026
+    </footer>
+</body>
+</html>
+`;
+
+const homeUrl = `${SITE_URL}/`;
+const blogUrl = `${SITE_URL}/blog.html`;
+
+const readPosts = () => {
+  const posts = [];
+  for (const file of fs.readdirSync(POSTS_DIR)) {
+    if (!file.endsWith('.md')) continue;
+    const content = fs.readFileSync(path.join(POSTS_DIR, file), 'utf-8');
+    const { meta, body } = parseFrontMatter(content);
+    const slug = slugify(meta.slug || meta.title || file.replace(/\.md$/, ''));
+    posts.push({
+      slug,
+      title: meta.title || slug,
+      date: meta.date || fs.statSync(path.join(POSTS_DIR, file)).mtime.toISOString().slice(0, 10),
+      description: meta.description || '',
+      body,
+    });
+  }
+  return posts.sort((a, b) => new Date(b.date) - new Date(a.date));
+};
+
+const articleJsonLd = (post) =>
+  JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: post.title,
+    description: post.description || SITE_DESCRIPTION,
+    author: { '@type': 'Person', name: AUTHOR, url: homeUrl },
+    publisher: { '@type': 'Person', name: AUTHOR, url: homeUrl },
+    datePublished: post.date,
+    dateModified: post.date,
+    mainEntityOfPage: `${SITE_URL}/post/${post.slug}/`,
+  });
+
+const renderListing = (posts) => {
+  const items = posts
+    .map((post) => {
+      const d = new Date(post.date);
+      return `
+            <div class="post">
+                <div class="date">
+                    <span class="day">${d.getDate()}</span>
+                    <span class="year">${formatYear(post.date)}</span>
+                </div>
+                <div class="body">
+                    <h4 class="title"><a href="post/${post.slug}/">${escapeHtml(post.title)}</a></h4>
+                    ${post.description ? `<div class="description">${escapeHtml(post.description)}</div>` : ''}
+                </div>
+            </div>`;
+    })
+    .join('\n');
+
+  return shell({
+    cssPath: 'css/style.css',
+    homePath: 'index.html',
+    blogPath: 'blog.html',
+    title: `Musings - ${SITE_TITLE}`,
+    description: SITE_DESCRIPTION,
+    activeNav: 'musings',
+    canonical: blogUrl,
+    jsonLd: '',
+  }).replace(
+    '{{BODY}}',
+    `
+            <section class="page">
+                <h3 class="title kind-section">Musings</h3>
+                <p>${SITE_DESCRIPTION}</p>
+                <div class="posts">${items}
+                </div>
+            </section>
+    `
+  );
+};
+
+const renderPost = (post) => {
+  const url = `${SITE_URL}/post/${post.slug}/`;
+  const html = marked.parse(post.body.replace(/^# .+\n+/, ''));
+
+  const body = `
+            <article class="post">
+                <div class="post-header">
+                    <h1 class="title">${escapeHtml(post.title)}</h1>
+                    <div class="meta"><span class="date">${formatYear(post.date)}</span></div>
+                </div>
+                <div class="body">${html}</div>
+            </article>
+    `;
+
+  return shell({
+    cssPath: '../css/style.css',
+    homePath: '../index.html',
+    blogPath: '../blog.html',
+    title: `${post.title} - ${SITE_TITLE}`,
+    description: escapeHtml(post.description || post.title),
+    activeNav: 'musings',
+    canonical: url,
+    jsonLd: articleJsonLd(post),
+  }).replace('{{BODY}}', body);
+};
+
+const renderSitemap = (posts) => {
+  const urls = [
+    { loc: homeUrl, lastmod: posts[0] ? posts[0].date : '' },
+    { loc: blogUrl, lastmod: posts[0] ? posts[0].date : '' },
+    ...posts.map((p) => ({ loc: `${SITE_URL}/post/${p.slug}/`, lastmod: p.date })),
+  ];
+  return `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${urls.map((u) => `  <url>\n    <loc>${u.loc}</loc>\n    ${u.lastmod ? `<lastmod>${u.lastmod}</lastmod>` : ''}\n  </url>`).join('\n')}
+</urlset>
+`;
+};
+
+const renderLlms = (posts) => `# ${SITE_TITLE}
+
+> ${SITE_TAGLINE}
+
+## About
+
+Personal homepage and blog of ${SITE_TITLE}. ${SITE_DESCRIPTION}
+
+## Posts
+
+${posts.map((p) => `- [${p.title}](${SITE_URL}/post/${p.slug}/)${p.description ? `: ${p.description}` : ''}`).join('\n')}
+`;
+
+const main = () => {
+  const posts = readPosts();
+
+  const listing = renderListing(posts);
+  const sitemap = renderSitemap(posts);
+  const llms = renderLlms(posts);
+
+  const postsJson = posts.reduce((acc, p) => {
+    acc[p.slug] = {
+      title: p.title,
+      date: p.date,
+      description: p.description,
+      url: `${SITE_URL}/post/${p.slug}/`,
+      size: p.body.length,
+      content: p.body,
+    };
     return acc;
   }, {});
 
-fs.writeFileSync('./posts.json', JSON.stringify(posts));
-console.log(`Generated posts.json with ${Object.keys(posts).length} posts.`);
+  fs.writeFileSync('blog.html', listing);
+  fs.writeFileSync('sitemap.xml', sitemap);
+  fs.writeFileSync('llms.txt', llms);
+  fs.writeFileSync('posts.json', JSON.stringify(postsJson));
+
+  fs.rmSync('./post', { recursive: true, force: true });
+  fs.mkdirSync('./post', { recursive: true });
+  for (const post of posts) {
+    fs.mkdirSync(`./post/${post.slug}`, { recursive: true });
+    fs.writeFileSync(`./post/${post.slug}/index.html`, renderPost(post));
+  }
+
+  console.log(`Generated static site (${SITE_URL}): ${posts.length} posts -> blog.html, sitemap.xml, llms.txt, posts.json`);
+};
+
+main();

@@ -1,0 +1,15 @@
+# Ravi Raj
+
+> "दोगलापन" bhi zaroori hai.
+
+## About
+
+Personal homepage and blog of Ravi Raj. An assorted collection of thoughts on technology, business, and life.
+
+## Posts
+
+- [The Art of Building Products](https://raviraj.qd.je/post/the-art-of-building-products/): What I learned from building products that users actually want
+- [Why Simplicity Wins](https://raviraj.qd.je/post/why-simplicity-wins/): In a world full of complexity, simple solutions often prevail
+- [Lessons from Failed Startups](https://raviraj.qd.je/post/lessons-from-failed-startups/): What failure taught me about entrepreneurship and resilience
+- [The Remote Work Revolution](https://raviraj.qd.je/post/the-remote-work-revolution/): How working remotely changed my perspective on productivity
+- [Finding Balance in a Digital World](https://raviraj.qd.je/post/finding-balance-in-a-digital-world/): Tips for maintaining sanity while being constantly connected
