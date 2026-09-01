@@ -23,13 +23,11 @@ const details = (file) => {
   const content = fs.readFileSync(path.join(POSTS_DIR, file), 'utf-8');
   const { meta, body } = parseFrontMatter(content);
   const slug = file.replace(/\.md$/, '');
-  const stat = fs.statSync(path.join(POSTS_DIR, file));
 
   return {
     title: meta.title || slug.replace(/-/g, ' '),
-    date: meta.date || stat.mtime.toISOString().slice(0, 10),
+    date: meta.date || fs.statSync(path.join(POSTS_DIR, file)).mtime.toISOString().slice(0, 10),
     description: meta.description || '',
-    mtime: stat.mtime,
     size: body.length,
     content: body,
   };
