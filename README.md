@@ -1,6 +1,8 @@
-# Ravi Raj — Personal Blog
+# Personal Introduction website + Blog
 
-Musings on technology, business, and life. Hosted on GitHub Pages.
+I liked the design and simplicity of this website: https://nithinkamath.me/.
+
+Hence, I copied the design, using vibe coding.
 
 ## How it works
 
