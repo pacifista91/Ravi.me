@@ -183,9 +183,9 @@ const renderPost = (post) => {
     `;
 
   return shell({
-    cssPath: '../css/style.css',
-    homePath: '../index.html',
-    blogPath: '../blog.html',
+    cssPath: '../../css/style.css',
+    homePath: '../../index.html',
+    blogPath: '../../blog.html',
     title: `${post.title} - ${SITE_TITLE}`,
     description: escapeHtml(post.description || post.title),
     activeNav: 'musings',
