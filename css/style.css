@@ -181,14 +181,15 @@ a:hover {
 }
 
 .kind-section {
-    font-size: 1.8rem;
+    font-size: 2rem;
     color: var(--main-color);
-    margin-bottom: 10px;
+    margin-bottom: 12px;
 }
 
 .page > p {
     color: var(--muted-color);
-    margin-bottom: 30px;
+    font-size: 1.05rem;
+    margin-bottom: 40px;
 }
 
 .posts {
@@ -197,22 +198,23 @@ a:hover {
 
 .posts .post {
     display: flex;
-    padding: 20px 0;
+    padding: 28px 0;
     border-bottom: 1px solid var(--border-color);
 }
 
 .posts .date {
     flex-shrink: 0;
-    width: 70px;
-    padding-top: 3px;
+    width: 76px;
+    padding-top: 2px;
+    padding-right: 20px;
 }
 
 .posts .day {
     display: block;
-    font-size: 1.8rem;
+    font-size: 2rem;
     font-weight: 600;
     color: var(--main-color);
-    line-height: 1.2;
+    line-height: 1.1;
 }
 
 .posts .year {
@@ -220,6 +222,7 @@ a:hover {
     color: var(--muted-color);
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    margin-top: 2px;
 }
 
 .posts .body {
@@ -227,9 +230,9 @@ a:hover {
 }
 
 .posts .title {
-    font-size: 1rem;
+    font-size: 1.15rem;
     font-weight: 600;
-    margin-bottom: 4px;
+    margin-bottom: 6px;
 }
 
 .posts .title a {
@@ -249,8 +252,9 @@ a:hover {
 }
 
 .posts .description {
-    font-size: 0.85rem;
+    font-size: 0.9rem;
     color: var(--muted-color);
+    line-height: 1.6;
 }
 
 /* Article view */
