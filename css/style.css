@@ -189,7 +189,7 @@ a:hover {
 .page > p {
     color: var(--muted-color);
     font-size: 1.05rem;
-    margin-bottom: 40px;
+    margin-bottom: 48px;
 }
 
 .posts {
@@ -206,7 +206,7 @@ a:hover {
     flex-shrink: 0;
     width: 76px;
     padding-top: 2px;
-    padding-right: 20px;
+    padding-right: 34px;
 }
 
 .posts .day {
