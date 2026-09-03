@@ -77,8 +77,10 @@ const shell = ({ cssPath, homePath, blogPath, imgPath, title, description, activ
         <div class="header">
             <div class="logo">
                 <a href="${homePath}"><img src="${imgPath}" alt="Ravi Raj" class="photo"></a>
-                <h1><a href="${homePath}">${SITE_TITLE}</a></h1>
-                <p class="tagline">${SITE_TAGLINE}</p>
+                <div>
+                    <h1><a href="${homePath}">${SITE_TITLE}</a></h1>
+                    <p class="tagline">${SITE_TAGLINE}</p>
+                </div>
             </div>
             <nav class="nav">
                 <a href="${homePath}" ${activeNav === 'home' ? 'class="active"' : ''}>Home</a>

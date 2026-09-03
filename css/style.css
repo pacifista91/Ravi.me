@@ -59,14 +59,23 @@ a:hover {
     align-items: flex-start;
 }
 
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.logo > div {
+    line-height: 1.2;
+}
+
 .logo .photo {
     width: 64px;
     height: 64px;
     border-radius: 50%;
     object-fit: cover;
     border: 1px solid var(--border-color);
-    vertical-align: middle;
-    margin-right: 12px;
+    flex-shrink: 0;
 }
 
 .logo h1 {
