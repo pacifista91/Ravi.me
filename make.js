@@ -8,7 +8,7 @@ const SITE_URL = (
   (CNAME ? `https://${CNAME}` : 'https://pacifista91.github.io/Ravi.me')
 ).replace(/\/$/, '');
 const SITE_TITLE = 'Ravi Raj';
-const SITE_TAGLINE = '"दोगलापन" bhi zaroori hai.';
+const SITE_TAGLINE = 'Politics, Culture & Calculated Contradictions';
 const SITE_DESCRIPTION = 'An assorted collection of thoughts on technology, business, and life.';
 const BLOG_BYLINE = 'My unapologetic thoughts on Politics, Law, and Lies.';
 const AUTHOR = 'Ravi Raj';
