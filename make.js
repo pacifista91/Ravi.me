@@ -10,6 +10,7 @@ const SITE_URL = (
 const SITE_TITLE = 'Ravi Raj';
 const SITE_TAGLINE = '"दोगलापन" bhi zaroori hai.';
 const SITE_DESCRIPTION = 'An assorted collection of thoughts on technology, business, and life.';
+const BLOG_BYLINE = 'My unapologetic thoughts on Politics, Law, and Lies.';
 const AUTHOR = 'Ravi Raj';
 const POSTS_DIR = './posts';
 const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
@@ -80,7 +81,7 @@ const shell = ({ cssPath, homePath, blogPath, title, description, activeNav, can
             </div>
             <nav class="nav">
                 <a href="${homePath}" ${activeNav === 'home' ? 'class="active"' : ''}>Home</a>
-                <a href="${blogPath}" ${activeNav === 'musings' ? 'class="active"' : ''}>Musings</a>
+                <a href="${blogPath}" ${activeNav === 'musings' ? 'class="active"' : ''}>Dualities</a>
             </nav>
         </div>
         <div class="content">
@@ -150,7 +151,7 @@ const renderListing = (posts) => {
     cssPath: 'css/style.css',
     homePath: 'index.html',
     blogPath: 'blog.html',
-    title: `Musings - ${SITE_TITLE}`,
+    title: `Dualities - ${SITE_TITLE}`,
     description: SITE_DESCRIPTION,
     activeNav: 'musings',
     canonical: blogUrl,
@@ -159,8 +160,8 @@ const renderListing = (posts) => {
     '{{BODY}}',
     `
             <section class="page">
-                <h3 class="title kind-section">Musings</h3>
-                <p>${SITE_DESCRIPTION}</p>
+                <h3 class="title kind-section">Dualities</h3>
+                <p>${BLOG_BYLINE}</p>
                 <div class="posts">${items}
                 </div>
             </section>
@@ -213,7 +214,7 @@ const renderLlms = (posts) => `# ${SITE_TITLE}
 
 ## About
 
-Personal homepage and blog of ${SITE_TITLE}. ${SITE_DESCRIPTION}
+Personal homepage of ${SITE_TITLE}. "Dualities" — ${BLOG_BYLINE}
 
 ## Posts
 
