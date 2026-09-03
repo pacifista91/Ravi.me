@@ -50,7 +50,7 @@ const formatYear = (iso) => {
   return `${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
 };
 
-const shell = ({ cssPath, homePath, blogPath, title, description, activeNav, canonical, jsonLd }) => `
+const shell = ({ cssPath, homePath, blogPath, imgPath, title, description, activeNav, canonical, jsonLd }) => `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -76,6 +76,7 @@ const shell = ({ cssPath, homePath, blogPath, title, description, activeNav, can
     <section class="container wrap">
         <div class="header">
             <div class="logo">
+                <a href="${homePath}"><img src="${imgPath}" alt="Ravi Raj" class="photo"></a>
                 <h1><a href="${homePath}">${SITE_TITLE}</a></h1>
                 <p class="tagline">${SITE_TAGLINE}</p>
             </div>
@@ -151,6 +152,7 @@ const renderListing = (posts) => {
     cssPath: 'css/style.css',
     homePath: 'index.html',
     blogPath: 'blog.html',
+    imgPath: 'images/ravi.jpeg',
     title: `Dualities - ${SITE_TITLE}`,
     description: SITE_DESCRIPTION,
     activeNav: 'musings',
@@ -187,6 +189,7 @@ const renderPost = (post) => {
     cssPath: '../../css/style.css',
     homePath: '../../index.html',
     blogPath: '../../blog.html',
+    imgPath: '../../images/ravi.jpeg',
     title: `${post.title} - ${SITE_TITLE}`,
     description: escapeHtml(post.description || post.title),
     activeNav: 'musings',
