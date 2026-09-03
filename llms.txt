@@ -9,5 +9,3 @@ Personal homepage of Ravi Raj. "Dualities" — My unapologetic thoughts on Polit
 ## Posts
 
 - [The Art of Building Products](https://raviraj.qd.je/post/the-art-of-building-products/): What I learned from building products that users actually want
-- [Why Simplicity Wins](https://raviraj.qd.je/post/why-simplicity-wins/): In a world full of complexity, simple solutions often prevail
-- [Lessons from Failed Startups](https://raviraj.qd.je/post/lessons-from-failed-startups/): What failure taught me about entrepreneurship and resilience
