@@ -50,6 +50,11 @@ const formatYear = (iso) => {
   return `${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
 };
 
+const formatFullDate = (iso) => {
+  const d = new Date(iso);
+  return `${MONTHS[d.getMonth()]} ${d.getDate()}, ${d.getFullYear()}`;
+};
+
 const shell = ({ cssPath, homePath, blogPath, imgPath, faviconPath, title, description, activeNav, canonical, jsonLd }) => `
 <!DOCTYPE html>
 <html lang="en">
@@ -183,7 +188,7 @@ const renderPost = (post) => {
             <article class="post">
                 <div class="post-header">
                     <h1 class="title">${escapeHtml(post.title)}</h1>
-                    <div class="meta"><span class="date">${formatYear(post.date)}</span></div>
+                    <div class="meta"><span class="date">${formatFullDate(post.date)}</span></div>
                 </div>
                 <div class="body">${html}</div>
             </article>
