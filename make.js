@@ -50,7 +50,7 @@ const formatYear = (iso) => {
   return `${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
 };
 
-const shell = ({ cssPath, homePath, blogPath, imgPath, title, description, activeNav, canonical, jsonLd }) => `
+const shell = ({ cssPath, homePath, blogPath, imgPath, faviconPath, title, description, activeNav, canonical, jsonLd }) => `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -68,7 +68,7 @@ const shell = ({ cssPath, homePath, blogPath, imgPath, title, description, activ
     <link rel="canonical" href="${canonical}">
     ${jsonLd ? `<script type="application/ld+json">${jsonLd}</script>` : ''}
     <link rel="stylesheet" href="${cssPath}">
-    <link rel="icon" type="image/jpeg" href="${imgPath}">
+    <link rel="icon" type="image/jpeg" href="${faviconPath}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -156,6 +156,7 @@ const renderListing = (posts) => {
     homePath: 'index.html',
     blogPath: 'blog.html',
     imgPath: 'images/ravi.jpeg',
+    faviconPath: 'images/favicon.jpeg',
     title: `Dualities - ${SITE_TITLE}`,
     description: SITE_DESCRIPTION,
     activeNav: 'musings',
@@ -193,6 +194,7 @@ const renderPost = (post) => {
     homePath: '../../index.html',
     blogPath: '../../blog.html',
     imgPath: '../../images/ravi.jpeg',
+    faviconPath: '../../images/favicon.jpeg',
     title: `${post.title} - ${SITE_TITLE}`,
     description: escapeHtml(post.description || post.title),
     activeNav: 'musings',
