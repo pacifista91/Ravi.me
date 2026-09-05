@@ -8,4 +8,4 @@ Personal homepage of Ravi Raj. "Dualities" — My unapologetic thoughts on Polit
 
 ## Posts
 
-- [The Art of Building Products](https://raviraj.de.je/post/the-art-of-building-products/): What I learned from building products that users actually want
+- [The Art of Building Products](https://raviraj.dpdns.org/post/the-art-of-building-products/): What I learned from building products that users actually want
